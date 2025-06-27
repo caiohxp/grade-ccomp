@@ -6,58 +6,7 @@
     <title>Ciência da Computação - UFRRJ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0f172a; /* slate-900 */
-            color: #e2e8f0; /* slate-200 */
-        }
-        
-        /* Cores dos Núcleos para o tema escuro */
-        .border-nucleo-matematica { border-left-color: #38bdf8; } /* sky-400 */
-        .border-nucleo-programacao { border-left-color: #818cf8; } /* indigo-400 */
-        .border-nucleo-horizontal { border-left-color: #34d399; } /* emerald-400 */
-        .border-nucleo-especificas { border-left-color: #fbbF24; } /* amber-400 */
-        .border-ativ-academica { border-left-color: #f472b6; }   /* pink-400 */
-        .border-eletiva { border-left-color: #a78bfa; }       /* violet-400 */
-        
-        .bg-nucleo-matematica { background-color: #38bdf8; }
-        .bg-nucleo-programacao { background-color: #818cf8; }
-        .bg-nucleo-horizontal { background-color: #34d399; }
-        .bg-nucleo-especificas { background-color: #fbbF24; }
-        .bg-ativ-academica { background-color: #f472b6; }
-        .bg-eletiva { background-color: #a78bfa; }
-
-        /* Animações */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.8s ease-in-out forwards;
-        }
-        .slide-up {
-            opacity: 0;
-            animation: slideUp 0.6s ease-out forwards;
-        }
-
-        /* Modal */
-        .modal {
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-content {
-            transition: transform 0.3s ease;
-        }
-        .filtered-out {
-            opacity: 0.2;
-            transition: opacity 0.3s ease;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="antialiased">
 
@@ -69,7 +18,7 @@
                     <h1 class="text-3xl font-bold text-white">Ciência da Computação</h1>
                     <p class="text-md text-slate-400">UFRRJ - Campus Nova Iguaçu</p>
                 </div>
-                 <img src="https://logodownload.org/wp-content/uploads/2017/11/ufrrj-logo-universidade-federal-rural-do-rio-de-janeiro-logo.png" alt="" class="h-16 w-auto invert brightness-0">
+                 <img src="ufrrj-logo.png" alt="[Imagem do Logo da UFRRJ]" class="h-16 w-auto invert brightness-0">
             </div>
         </div>
     </header>
@@ -80,25 +29,25 @@
         <section class="mb-12 text-center">
             <h2 class="text-4xl font-bold text-white mb-4">Explore sua Jornada Acadêmica</h2>
             <p class="text-lg max-w-4xl mx-auto text-slate-300">
-                Uma visualização interativa da grade curricular. Clique em uma disciplina para ver detalhes e filtre por núcleo para planejar seus estudos.
+                Uma visualização interativa da grade curricular. Clique em uma disciplina para ver detalhes, filtre por núcleo e explore as trilhas de carreira para planejar seus estudos.
             </p>
         </section>
 
          <!-- Filtros -->
         <div id="filters" class="mb-8 p-4 bg-slate-800 rounded-lg shadow-md flex flex-wrap gap-2 justify-center">
-            <!-- Botões de filtro serão inseridos aqui -->
+            <!-- Botões de filtro serão inseridos aqui pelo script.js -->
         </div>
 
         <!-- Grade Curricular -->
         <div id="grade-curricular" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Os períodos serão inseridos aqui -->
+            <!-- Os períodos serão inseridos aqui pelo script.js -->
         </div>
 
         <!-- Trilhas de Carreira -->
         <section class="mt-20">
             <h2 class="text-3xl font-bold text-white text-center mb-8">Trilhas de Carreira (Eixos Profissionais)</h2>
             <div id="eixos-profissionais" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- Eixos serão inseridos aqui -->
+                <!-- Eixos serão inseridos aqui pelo script.js -->
             </div>
         </section>
     </main>
@@ -126,219 +75,18 @@
                     <h4 class="font-bold text-lg text-slate-200">Pré-requisitos</h4>
                     <p id="modal-prerequisitos" class="text-slate-300"></p>
                 </div>
+                 <div>
+                    <h4 class="font-bold text-lg text-slate-200">Docente(s)</h4>
+                    <p id="modal-docentes" class="text-slate-300"></p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg text-slate-200">Horário</h4>
+                    <p id="modal-horario" class="text-slate-300"></p>
+                </div>
             </div>
         </div>
     </div>
 
-
-    <script>
-        const ementas = {
-            'Computadores e Sociedade': 'Computadores, ética e sociedade. Casos de ética em Computação. Inclusão e Exclusão digital. Novas tecnologias e o seu impacto na sociedade. Doenças profissionais e ergonomia.',
-            'Geometria Analítica': 'Vetores. Retas e planos. Seções Cônicas. Superfícies.',
-            'Matemática Discreta para Computação': 'Lógica Matemática. Teoria dos Conjuntos. Técnicas de Demonstração. Relação de Recorrência. Análise Combinatória. Relações.',
-            'Programação Estruturada': 'Conceito de algoritmos. Bloco fundamentais de programação estruturada. Linguagem de programação imperativa: Estrutura de programa, Declarações, Principais Comandos. Representação de Dados na Forma de Vetores, Matrizes e Registros. Procedimentos e Funções. Passagem de Parâmetros. Recursividade. Ponteiros. Arquivos. Aplicações a problemas simples.',
-            'Introdução à Ciência da Computação': 'O curso de Ciência da Computação. Linha do tempo da computação. Hardware e Software Básico. Sistemas Numéricos. Grandes áreas da computação e o mercado de trabalho.',
-            'Circuitos Digitais': 'Introdução aos Circuitos Digitais. Álgebra de Boole. Blocos Lógicos Funcionais. Circuitos Aritméticos. Circuitos Sequenciais. Linguagens de descrição de hardware.',
-            'Cálculo I': 'Funções de uma variável. Limites. Teoremas sobre funções deriváveis. Regra de L\'Hôpital. Aplicações da Derivada. Máximos e Mínimos. Esboço de gráficos de funções.',
-            'Álgebra Linear I': 'Matrizes e Sistemas Lineares. Espaços vetoriais. Transformações lineares. Autovalores e Autovetores. Diagonalização de operadores.',
-            'Lógica para Computação': 'Sintaxe e Semântica da Lógica Proposicional e de Predicados. Dedução Axiomática. Resolução na Lógica Proposicional. Método de Resolução SLD.',
-            'Engenharia de Software I': 'Introdução aos Processos de Software. Engenharia de Requisitos. Verificação e Validação de Software. Disponibilização e Qualidade de Software.',
-            'Estrutura de Dados I': 'Complexidade de algoritmos. Listas lineares, encadeadas, circulares. Pilha e Fila. Algoritmos de ordenação. Árvores binárias, de busca, AVL e rubro-negras.',
-            'Arquitetura de Computadores': 'Aritmética computacional. Instruções e Linguagem de Máquina. O processador: caminho de dados e controle. Hierarquia de memória. Desempenho e Pipeline.',
-             'Banco de Dados': 'Modelagem Conceitual (Entidade-Relacionamento). Projeto Lógico. Normalização até a 4a Forma Normal. Algebra Relacional. Linguagem de Consulta Estruturada (SQL).',
-            'Inteligência Artificial': 'Fundamentos da IA. Resolução de Problemas por Meio de Busca. Conhecimento e Raciocínio com Enfoque Computacional. Incerteza. Aprendizagem Automática.',
-            // Adicionar mais ementas aqui para maior detalhamento
-        };
-
-        const grade = [
-            { periodo: 1, materias: [
-                { nome: 'Computadores e Sociedade', nucleo: 'horizontal', ementa: ementas['Computadores e Sociedade'] },
-                { nome: 'Geometria Analítica', nucleo: 'matematica', ementa: ementas['Geometria Analítica'] },
-                { nome: 'Matemática Discreta para Computação', nucleo: 'programacao', ementa: ementas['Matemática Discreta para Computação'] },
-                { nome: 'Programação Estruturada', nucleo: 'programacao', ementa: ementas['Programação Estruturada'] },
-                { nome: 'Introdução à Ciência da Computação', nucleo: 'programacao', ementa: ementas['Introdução à Ciência da Computação'] },
-                { nome: 'Circuitos Digitais', nucleo: 'programacao', ementa: ementas['Circuitos Digitais'] }
-            ]},
-            { periodo: 2, materias: [
-                { nome: 'Cálculo I', nucleo: 'matematica', prerequisitos: [], ementa: ementas['Cálculo I'] },
-                { nome: 'Álgebra Linear I', nucleo: 'matematica', prerequisitos: ['Geometria Analítica'], ementa: ementas['Álgebra Linear I'] },
-                { nome: 'Lógica para Computação', nucleo: 'programacao', ementa: ementas['Lógica para Computação'] },
-                { nome: 'Engenharia de Software I', nucleo: 'horizontal', ementa: ementas['Engenharia de Software I'] },
-                { nome: 'Estrutura de Dados I', nucleo: 'programacao', prerequisitos: ['Programação Estruturada'], ementa: ementas['Estrutura de Dados I'] },
-                { nome: 'Arquitetura de Computadores', nucleo: 'horizontal', prerequisitos: ['Circuitos Digitais'], ementa: ementas['Arquitetura de Computadores'] }
-            ]},
-            // Demais períodos...
-             { periodo: 3, materias: [ { nome: 'Cálculo II', nucleo: 'matematica', prerequisitos: ['Cálculo I'] }, { nome: 'Álgebra Linear Computacional', nucleo: 'matematica', prerequisitos: ['Álgebra Linear I'] }, { nome: 'Linguagens Formais e Autômatos', nucleo: 'programacao' }, { nome: 'Modelagem e Projeto de Software', nucleo: 'horizontal', prerequisitos: ['Engenharia de Software I'] }, { nome: 'Programação Orientada a Objetos', nucleo: 'programacao', prerequisitos: ['Programação Estruturada'] }, { nome: 'Grafos e Algoritmos', nucleo: 'horizontal' } ]},
-             { periodo: 4, materias: [ { nome: 'Cálculo III', nucleo: 'matematica', prerequisitos: ['Cálculo II'] }, { nome: 'Linguagens de Programação', nucleo: 'horizontal', prerequisitos: ['Programação Orientada a Objetos'] }, { nome: 'Probabilidade e Estatística para Ciência da Computação', nucleo: 'matematica', prerequisitos: ['Matemática Discreta para Computação', 'Cálculo II'] }, { nome: 'Sistemas Operacionais', nucleo: 'horizontal' }, { nome: 'Física para Ciência da Computação', nucleo: 'matematica', prerequisitos: ['Cálculo II'] }, { nome: 'Análise e Projeto de Algoritmos', nucleo: 'horizontal', prerequisitos: ['Grafos e Algoritmos'] } ]},
-             { periodo: 5, materias: [ { nome: 'Inteligência Artificial', nucleo: 'horizontal', prerequisitos: ['Lógica para Computação', 'Estruturas de Dados I'], ementa: ementas['Inteligência Artificial'] }, { nome: 'Compiladores', nucleo: 'horizontal', prerequisitos: ['Linguagens de Programação', 'Linguagens Formais e Autômatos'] }, { nome: 'Métodos Numéricos', nucleo: 'horizontal', prerequisitos: ['Cálculo II'] }, { nome: 'Banco de Dados', nucleo: 'horizontal', prerequisitos: ['Estruturas de Dados II'], ementa: ementas['Banco de Dados'] }, { nome: 'Computação Gráfica', nucleo: 'horizontal', prerequisitos: ['Álgebra Linear I', 'Estruturas de Dados I'] }, { nome: 'Otimização Linear', nucleo: 'horizontal', prerequisitos: ['Álgebra Linear I'] } ]},
-             { periodo: 6, materias: [ { nome: 'Redes e Sistemas Distribuídos', nucleo: 'horizontal', prerequisitos: ['Sistemas Operacionais'] }, { nome: 'Estruturas de Dados II', nucleo: 'horizontal', prerequisitos: ['Estruturas de Dados I'] }, { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'Eletiva', nucleo: 'eletiva' }, ]},
-             { periodo: 7, materias: [ { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'TCC 1', nucleo: 'academica' }, { nome: 'TCC 1', nucleo: 'academica' } ]},
-             { periodo: 8, materias: [ { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'Optativa', nucleo: 'especificas' }, { nome: 'TCC 2', nucleo: 'academica' }, { nome: 'TCC 2', nucleo: 'academica' } ]}
-        ];
-
-        const eixos = [
-            { 
-                nome: 'Algoritmos e Combinatória',
-                descricao: 'Foco em modelagem de problemas e projeto de algoritmos eficientes, exatos ou heurísticos, para questões de natureza combinatória.',
-                cargaHoraria: '180h (3 optativas)',
-                disciplinas: ['Tópicos em Otimização', 'Otimização Combinatória', 'Teoria dos Grafos', 'Tópicos em Grafos e Algoritmos', 'Teoria dos Jogos Algorítmica'],
-                nucleo: 'matematica'
-            },
-            { 
-                nome: 'Engenharia de Sistemas e Informação',
-                descricao: 'Engloba o desenvolvimento de sistemas, incluindo modelagem, gestão de processos, armazenamento e recuperação de dados, usabilidade e governança.',
-                cargaHoraria: '240h (4 optativas)',
-                disciplinas: ['Engenharia de Software II', 'Arquitetura de Software', 'Gerência de Projetos', 'Banco de Dados II', 'Interação Humano-Computador', 'Governança de TI'],
-                nucleo: 'horizontal'
-            },
-            { 
-                nome: 'Sistemas de Computação',
-                descricao: 'Aprofundamento em arquitetura de computadores, ambientes de execução paralelos e distribuídos, e desenvolvimento de aplicações de alto desempenho.',
-                cargaHoraria: '300h (5 optativas)',
-                disciplinas: ['Programação Paralela e Distribuída', 'Computação de Alto Desempenho', 'Programação em GPU', 'Redes de Computadores sem Fio', 'Roteamento em Redes'],
-                nucleo: 'programacao'
-            },
-            { 
-                nome: 'Sistemas Inteligentes',
-                descricao: 'Relacionado a sistemas especialistas e aplicações de inteligência artificial que podem interagir e aprender com os usuários e dados.',
-                cargaHoraria: '300h (5 optativas)',
-                disciplinas: ['Aprendizado de Máquina', 'Redes Neurais Artificiais', 'Mineração de Dados', 'Processamento de Linguagem Natural', 'Sistemas de Recomendação'],
-                nucleo: 'especificas'
-            }
-        ];
-
-        const nucleoClasses = {
-            matematica: { border: 'border-nucleo-matematica', bg: 'bg-nucleo-matematica', text: 'Matemática' },
-            programacao: { border: 'border-nucleo-programacao', bg: 'bg-nucleo-programacao', text: 'Programação' },
-            horizontal: { border: 'border-nucleo-horizontal', bg: 'bg-nucleo-horizontal', text: 'Horizontal' },
-            especificas: { border: 'border-nucleo-especificas', bg: 'bg-nucleo-especificas', text: 'Optativas' },
-            academica: { border: 'border-ativ-academica', bg: 'bg-ativ-academica', text: 'Acadêmica' },
-            eletiva: { border: 'border-eletiva', bg: 'bg-eletiva', text: 'Eletiva' }
-        };
-
-        const gradeContainer = document.getElementById('grade-curricular');
-        const eixosContainer = document.getElementById('eixos-profissionais');
-        const filtersContainer = document.getElementById('filters');
-        const modal = document.getElementById('modal');
-        const modalContent = document.getElementById('modal-content');
-        const closeModalBtn = document.getElementById('close-modal');
-
-        function openModal(materia) {
-            document.getElementById('modal-title').innerText = materia.nome;
-            const nucleoInfo = nucleoClasses[materia.nucleo];
-            const modalNucleo = document.getElementById('modal-nucleo');
-            modalNucleo.innerHTML = `<span class="px-3 py-1 text-sm rounded-full text-white ${nucleoInfo.bg}">${nucleoInfo.text}</span>`;
-            
-            document.getElementById('modal-ementa').innerText = materia.ementa || 'Ementa não disponível.';
-            document.getElementById('modal-prerequisitos').innerText = (materia.prerequisitos && materia.prerequisitos.length > 0) ? materia.prerequisitos.join(', ') : 'Sem pré-requisitos formais.';
-            
-            modal.classList.remove('invisible', 'opacity-0');
-            modalContent.classList.remove('scale-95');
-        }
-
-        function closeModal() {
-            modal.classList.add('invisible', 'opacity-0');
-            modalContent.classList.add('scale-95');
-        }
-
-        function renderGrade(filter = 'all') {
-            gradeContainer.innerHTML = '';
-            grade.forEach((p, index) => {
-                const periodoDiv = document.createElement('div');
-                periodoDiv.className = 'slide-up bg-slate-800 rounded-lg shadow-xl p-4 flex flex-col transition-all duration-300';
-                periodoDiv.style.animationDelay = `${index * 60}ms`;
-
-                periodoDiv.innerHTML = `<h3 class="text-xl font-bold mb-4 border-b border-slate-700 pb-2 text-white">Período ${p.periodo}</h3>`;
-                const materiasList = document.createElement('ul');
-                materiasList.className = 'space-y-2';
-
-                p.materias.forEach(m => {
-                    const li = document.createElement('li');
-                    const nucleoClass = nucleoClasses[m.nucleo]?.border || 'border-l-slate-600';
-                    li.className = `materia-item bg-slate-900 p-3 rounded-md border-l-4 cursor-pointer transition-all duration-300 hover:bg-slate-700 hover:shadow-md ${nucleoClass}`;
-                    li.dataset.nucleo = m.nucleo;
-                    
-                    if (filter !== 'all' && m.nucleo !== filter) {
-                        li.classList.add('filtered-out');
-                    }
-
-                    li.innerHTML = `<span class="font-semibold text-slate-100 text-sm">${m.nome}</span>`;
-                    li.addEventListener('click', () => openModal(m));
-                    materiasList.appendChild(li);
-                });
-                periodoDiv.appendChild(materiasList);
-                gradeContainer.appendChild(periodoDiv);
-            });
-        }
-        
-        function renderFilters() {
-            const buttonClasses = 'px-4 py-2 text-sm font-semibold rounded-full transition-all duration-300';
-            let buttonsHTML = `<button data-filter="all" class="${buttonClasses} bg-sky-600 text-white filter-btn-active">Todos</button>`;
-            
-            Object.keys(nucleoClasses).forEach(key => {
-                if (key !== 'academica' && key !== 'eletiva') { // Não criar filtros para TCC e eletiva
-                    const nucleo = nucleoClasses[key];
-                    buttonsHTML += `<button data-filter="${key}" class="${buttonClasses} bg-slate-700 text-slate-300 hover:bg-slate-600">${nucleo.text}</button>`;
-                }
-            });
-            filtersContainer.innerHTML = buttonsHTML;
-
-            filtersContainer.addEventListener('click', (e) => {
-                if(e.target.tagName === 'BUTTON') {
-                    const filter = e.target.dataset.filter;
-                    document.querySelectorAll('#filters button').forEach(btn => {
-                        btn.classList.remove('bg-sky-600', 'text-white', 'filter-btn-active');
-                        btn.classList.add('bg-slate-700', 'text-slate-300', 'hover:bg-slate-600');
-                    });
-                    e.target.classList.add('bg-sky-600', 'text-white');
-                    e.target.classList.remove('bg-slate-700', 'text-slate-300', 'hover:bg-slate-600');
-                    
-                    document.querySelectorAll('.materia-item').forEach(item => {
-                        if (filter === 'all' || item.dataset.nucleo === filter) {
-                            item.classList.remove('filtered-out');
-                        } else {
-                            item.classList.add('filtered-out');
-                        }
-                    });
-                }
-            });
-        }
-
-        function renderEixos() {
-            eixosContainer.innerHTML = '';
-            eixos.forEach((eixo, index) => {
-                const eixoCard = document.createElement('div');
-                const nucleoColor = nucleoClasses[eixo.nucleo].bg;
-                eixoCard.className = 'slide-up bg-slate-800 p-6 rounded-lg shadow-lg flex flex-col';
-                eixoCard.style.animationDelay = `${index * 100}ms`;
-
-                let disciplinasHTML = eixo.disciplinas.map(d => `<li class="text-slate-400">${d}</li>`).join('');
-
-                eixoCard.innerHTML = `
-                    <div class="flex-grow">
-                        <span class="px-3 py-1 text-xs rounded-full text-white font-semibold ${nucleoColor}">${eixo.cargaHoraria}</span>
-                        <h4 class="text-2xl font-bold text-white mt-4 mb-2">${eixo.nome}</h4>
-                        <p class="text-slate-300 mb-4">${eixo.descricao}</p>
-                        <h5 class="font-semibold text-slate-200 mb-2">Exemplos de Optativas:</h5>
-                        <ul class="list-disc list-inside space-y-1">${disciplinasHTML}</ul>
-                    </div>
-                `;
-                eixosContainer.appendChild(eixoCard);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            renderFilters();
-            renderGrade();
-            renderEixos();
-            
-            closeModalBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    closeModal();
-                }
-            });
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

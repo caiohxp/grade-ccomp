@@ -1,0 +1,50 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a; /* slate-900 */
+    color: #e2e8f0; /* slate-200 */
+}
+
+/* Cores dos Núcleos para o tema escuro */
+.border-nucleo-matematica { border-left-color: #fc534a; }
+.border-nucleo-programacao { border-left-color: #5197f8; }
+.border-nucleo-horizontal { border-left-color: #34d399; }
+.border-nucleo-especificas { border-left-color: #fbbF24; }
+.border-ativ-academica { border-left-color: #f472b6; }  
+.border-eletiva { border-left-color: #fbbF24 };
+
+.bg-nucleo-matematica { background-color: #fc534a; }
+.bg-nucleo-programacao { background-color: #5197f8; }
+.bg-nucleo-horizontal { background-color: #34d399; }
+.bg-nucleo-especificas { background-color: #fbbF24; }
+.bg-ativ-academica { background-color: #f472b6; }
+.bg-eletiva { background-color: #fbbF24; }
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+.slide-up {
+    opacity: 0;
+    animation: slideUp 0.6s ease-out forwards;
+}
+
+/* Modal */
+.modal {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.modal-content {
+    transition: transform 0.3s ease;
+}
+.filtered-out {
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+}
