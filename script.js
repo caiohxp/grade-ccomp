@@ -123,6 +123,12 @@ const modal = document.getElementById('modal');
 const modalContent = document.getElementById('modal-content');
 const closeModalBtn = document.getElementById('close-modal');
 
+let feitas = JSON.parse(localStorage.getItem('materiasFeitas') || '{}');
+
+function salvarFeitas() {
+    localStorage.setItem('materiasFeitas', JSON.stringify(feitas));
+}
+
 function openModal(materia) {
     document.getElementById('modal-title').innerText = materia.nome;
     document.getElementById('modal-codigo').innerText = materia.codigo || '';
@@ -135,6 +141,32 @@ function openModal(materia) {
     document.getElementById('modal-docentes').innerText = materia.docentes || 'Não informado';
     document.getElementById('modal-horario').innerText = materia.horario || 'Não informado';
 
+    // Botão de marcar como feita
+    const toggleBtn = document.getElementById('toggle-feita');
+    if (!materia.codigo) {
+        toggleBtn.style.display = 'none';
+    } else {
+        toggleBtn.style.display = '';
+        toggleBtn.innerText = feitas[materia.codigo] ? 'Desmarcar como concluída' : 'Marcar como concluída';
+        toggleBtn.onclick = () => {
+            feitas[materia.codigo] = !feitas[materia.codigo];
+            salvarFeitas();
+            renderGrade(); // Atualiza a grade para riscar ou não
+            renderEixos(); // Atualiza eixos também
+            openModal(materia); // Reabre modal para atualizar botão e nome
+        };
+    }
+
+    // Risco no nome dentro do modal
+    const modalTitle = document.getElementById('modal-title');
+    if (feitas[materia.codigo]) {
+        modalTitle.style.textDecoration = 'line-through';
+        modalTitle.style.opacity = '0.6';
+    } else {
+        modalTitle.style.textDecoration = '';
+        modalTitle.style.opacity = '';
+    }
+
     modal.classList.remove('invisible', 'opacity-0');
     modalContent.classList.remove('scale-95');
 }
@@ -146,6 +178,13 @@ function closeModal() {
 
 function renderGrade(filter = 'all') {
     gradeContainer.innerHTML = '';
+
+    // 1. Conte quantas optativas dos eixos estão concluídas
+    const optativasEixosCodigos = eixos.flatMap(eixo => eixo.disciplinas.map(id => disciplinas[id]?.codigo).filter(Boolean));
+    const optativasFeitasCount = optativasEixosCodigos.filter(cod => feitas[cod]).length;
+
+    let optativasMarcadas = 0;
+
     grade.forEach((p, index) => {
         const periodoDiv = document.createElement('div');
         periodoDiv.className = 'slide-up bg-slate-800 rounded-lg shadow-xl p-4 flex flex-col transition-all duration-300';
@@ -167,8 +206,17 @@ function renderGrade(filter = 'all') {
                 li.classList.add('filtered-out');
             }
 
+            // 2. Risco se feita (normal)
+            let riscado = feitas[materia.codigo] ? 'line-through opacity-60' : '';
+
+            // 3. Se for Optativa da grade, risque conforme optativas feitas nos eixos
+            if (materia.nome === 'Optativa' && optativasMarcadas < optativasFeitasCount) {
+                riscado = 'line-through opacity-60';
+                optativasMarcadas++;
+            }
+
             li.innerHTML = `<div class="flex justify-between items-center">
-                              <span class="font-semibold text-slate-100 text-sm">${materia.nome}</span>
+                              <span class="font-semibold text-slate-100 text-sm ${riscado}">${materia.nome}</span>
                               <span class="text-xs font-mono text-slate-500">${materia.codigo || ''}</span>
                             </div>`;
             if (materia.nome === 'Optativa') {
@@ -187,7 +235,7 @@ function renderGrade(filter = 'all') {
 
 function renderFilters() {
     const buttonClasses = 'filter-btn px-4 py-2 text-sm font-semibold rounded-t-lg transition-all duration-300 bg-slate-700 text-slate-300';
-    let buttonsHTML = `<button data-filter="all" class="${buttonClasses} active">Todos</button>`;
+    let buttonsHTML = ``;
 
     Object.keys(nucleoClasses).forEach(key => {
         if (key !== 'academica' && key !== 'eletiva') {
@@ -196,27 +244,6 @@ function renderFilters() {
         }
     });
     filtersContainer.innerHTML = buttonsHTML;
-
-    filtersContainer.addEventListener('click', (e) => {
-        if (e.target.tagName === 'BUTTON') {
-            const filter = e.target.dataset.filter;
-            // Remove 'active' class from all buttons
-            document.querySelectorAll('#filters button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            // Add 'active' class to the clicked button
-            e.target.classList.add('active');
-
-            // Filter the grid
-            document.querySelectorAll('.materia-item').forEach(item => {
-                if (filter === 'all' || item.dataset.nucleo === filter) {
-                    item.classList.remove('filtered-out');
-                } else {
-                    item.classList.add('filtered-out');
-                }
-            });
-        }
-    });
 }
 
 function renderEixos() {
@@ -233,11 +260,12 @@ function renderEixos() {
             const optativa = disciplinas[optativaId];
             if (!optativa) return;
             const nucleoClass = nucleoClasses[optativa.nucleo]?.border || 'border-l-slate-600';
+            const riscado = feitas[optativa.codigo] ? 'line-through opacity-60' : '';
             const li = document.createElement('li');
             li.className = `materia-item bg-slate-900 p-3 rounded-md border-l-4 cursor-pointer transition-all duration-300 hover:bg-slate-700 hover:shadow-md ${nucleoClass}`;
             li.dataset.nucleo = optativa.nucleo;
             li.innerHTML = `<div class="flex justify-between items-center">
-                              <span class="font-semibold text-slate-100 text-sm">${optativa.nome}</span>
+                              <span class="font-semibold text-slate-100 text-sm ${riscado}">${optativa.nome}</span>
                               <span class="text-xs font-mono text-slate-500">${optativa.codigo || ''}</span>
                             </div>`;
             li.addEventListener('click', () => openModal(optativa));
