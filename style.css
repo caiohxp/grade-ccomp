@@ -10,7 +10,7 @@ body {
 .border-nucleo-horizontal { border-left-color: #34d399; }
 .border-nucleo-especificas { border-left-color: #fbbF24; }
 .border-ativ-academica { border-left-color: #f472b6; }  
-.border-eletiva { border-left-color: #fbbF24 };
+.border-eletiva { border-left-color: #fbbF24; }
 
 .bg-nucleo-matematica { background-color: #fc534a; }
 .bg-nucleo-programacao { background-color: #5197f8; }
